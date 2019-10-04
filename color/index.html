@@ -3,9 +3,10 @@
 <!--
 
 - hover over square to show hex
+  - tooltips
 - select color steps from dropdown
-  -> change number of divs
-  -> change number of hex inputs
+  - change number of divs
+  - change number of hex inputs
 
  -->
 
@@ -78,6 +79,11 @@
     +
     <kbd>Space</kbd>
 
+    <p>Here we have some
+      <span tabindex="0" data-description="collection of words and punctuation">text</span> with a few
+      <span tabindex="0" data-description="small popups that appear when hovering">tooltips</span>.
+    </p>
+
     <style media="screen">
       :root {
         --red:112;
@@ -114,6 +120,29 @@
         border-bottom: 4px solid #bba;
         border-radius: 0px;
         outline: solid 1px #321;
+      }
+
+      /* from MDN */
+      span[data-description] {
+        position: relative;
+        text-decoration: underline;
+        color: #00F;
+        cursor: default;
+      }
+      span[data-description]:hover::after,
+      span[data-description]:focus::after {
+        content: attr(data-description);
+        position: absolute;
+        left: 0;
+        top: 18px;
+        min-width: 100px;
+        border: 1px #bba solid;
+        border-radius: 2px;
+        background-color: #ffe;
+        padding: 8px;
+        color: #000000;
+        font-size: 12px;
+        z-index: 1;
       }
 
     </style>
