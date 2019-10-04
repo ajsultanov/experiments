@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+
+<!--
+
+- hover over square to show hex
+- select color steps from dropdown
+  -> change number of divs
+  -> change number of hex inputs
+
+ -->
+
+
+
+
+
+
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Color Tools</title>
+  </head>
+  <body>
+
+    <div class="slider">
+
+    </div>
+
+    <label for="red">Red</label>
+    <input id="red" class="sliders" type="range" name="red" min="0" max="256" step="16" list="ticksr" value="">
+    <datalist id="ticksr">
+      <option value="0"></option>
+      <option value="32" ></option>
+      <option value="64" ></option>
+      <option value="96" ></option>
+      <option value="128" ></option>
+      <option value="160" ></option>
+      <option value="192" ></option>
+      <option value="224" ></option>
+      <option value="256"></option>
+    </datalist><br/>
+    <label for="green">Green</label>
+    <input id="green" class="sliders" type="range" name="green" min="0" max="256" step="16" list="ticksg" value="">
+    <datalist id="ticksg">
+      <option value="0"></option>
+      <option value="32" ></option>
+      <option value="64" ></option>
+      <option value="96" ></option>
+      <option value="128" ></option>
+      <option value="160" ></option>
+      <option value="192" ></option>
+      <option value="224" ></option>
+      <option value="256"></option>
+    </datalist><br/>
+    <label for="blue">Blue</label>
+    <input id="blue" class="sliders" type="range" name="blue" min="0" max="256" step="16" list="ticksb" value="">
+    <datalist id="ticksb">
+      <option value="0"></option>
+      <option value="32" ></option>
+      <option value="64" ></option>
+      <option value="96" ></option>
+      <option value="128" ></option>
+      <option value="160" ></option>
+      <option value="192" ></option>
+      <option value="224" ></option>
+      <option value="256"></option>
+    </datalist><br/>
+
+    <hr/><br/>
+
+    <kbd>Q</kbd>
+    <kbd>W</kbd>
+    <kbd>E</kbd>
+    <kbd>R</kbd>
+    <kbd>T</kbd>
+    <kbd>Y</kbd>
+    <kbd>Ctrl</kbd>
+    +
+    <kbd>Space</kbd>
+
+    <style media="screen">
+      :root {
+        --red:112;
+        --green:224;
+        --blue:32;
+
+        --slider: rgb(var(--red), var(--green), var(--blue));
+
+        --hex1:00;
+        --hex2:85;
+        --hex3:170;
+        --hex4:255;
+      }
+
+      .slider {
+        height: 100px;
+        width: 400px;
+        background: var(--slider);
+      }
+
+      input.sliders {
+        width: 300px;
+        margin: 10px;
+      }
+
+      kbd {
+        padding: 6px 8px;
+        color: #321;
+        background: #ddc;
+        font-family: Helvetica;
+        border-left: 4px solid #eed;
+        border-top: 4px solid #ffe;
+        border-right: 4px solid #ccb;
+        border-bottom: 4px solid #bba;
+        border-radius: 0px;
+        outline: solid 1px #321;
+      }
+
+    </style>
+
+    <script type="text/javascript">
+
+      const slider = document.querySelector(".slider")
+      console.log(getComputedStyle(slider).getPropertyValue("--slider"));
+
+      const redin = document.querySelector("#red")
+      const greenin = document.querySelector("#green")
+      const bluein = document.querySelector("#blue")
+      let red = getComputedStyle(document.documentElement).getPropertyValue('--red');
+      let green = getComputedStyle(document.documentElement).getPropertyValue('--green');
+      let blue = getComputedStyle(document.documentElement).getPropertyValue('--blue');
+      redin.setAttribute("value", red);
+      greenin.setAttribute("value", green);
+      bluein.setAttribute("value", blue);
+
+      const rgbInputs = document.querySelectorAll('input.sliders');
+      rgbInputs.forEach(input => input.oninput = colorUpdate);
+      function colorUpdate() {
+        document.documentElement.style.setProperty(`--${this.name}`, this.value);
+        console.log(this.name, this.value);
+      }
+
+      const hexInputs = document.querySelectorAll('input.hex');
+      console.log(hexInputs);
+      hexInputs.forEach(input => input.addEventListener('change', hexUpdate));
+      function hexUpdate() {
+        document.documentElement.style.setProperty(`--${this.name}`, this.value);
+        console.log(this.name, this.value);
+      }
+
+    </script>
+  </body>
+
+</html>
