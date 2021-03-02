@@ -32,7 +32,7 @@
   </head>
   <body>
 
-    <div class="slider">
+    <div class="field">
     </div>
     <br/>
     <div class="constraints">
@@ -123,7 +123,7 @@
         --green: 170;
         --blue: 255;
 
-        --slider: rgb(var(--red), var(--green), var(--blue));
+        --field: rgb(var(--red), var(--green), var(--blue));
 
       }
 
@@ -131,10 +131,10 @@
         font-family: "Courier New";
       }
 
-      .slider {
+      .field {
         height: 100px;
         width: 400px;
-        background: var(--slider);
+        background: var(--field);
       }
 
       .constraints {
@@ -154,19 +154,50 @@
 
     <script type="text/javascript">
 
+      const uniTarget = document.querySelector('#uniTarget')
+      const uniSlider = document.createElement('input')
       const uniSteps = document.querySelector('#uni-steps')
       let stepValue = uniSteps.value;
 
-      const uniTarget = document.querySelector('#uniTarget')
-      const uniSlider = document.createElement("input")
       const makeSlider = (steps = 16) => {
         uniSlider.setAttribute('type', 'range')
-        uniSlider.setAttribute('width', '400px')
+        uniSlider.style.width = '400px'
         uniSlider.setAttribute('step', `${100 / steps}`)
         uniTarget.appendChild(uniSlider)
+
+        const ticks = document.createElement('datalist')
+        ticks.setAttribute('id', 'ticks')
+        ticks.style.display = 'inline'
+        uniSlider.appendChild(ticks)
+        uniSlider.setAttribute('list', 'ticks')
+
+        let op
+        for (let i = 0; i <= steps; i++) {
+          let val = Math.round(100 / steps * i)
+          op = document.createElement('option')
+          op.setAttribute('value', `${val}`)
+          op.setAttribute('label', `${val}`)
+          ticks.appendChild(op)
+        }
+        uniTarget.appendChild(document.createElement('br'))
       }
-      makeSlider(4)
-      console.log(uniSlider);
+      makeSlider(8)
+
+      const makeLabels = (steps = 16) => {
+        let label = document.createElement('div')
+        label.style.display = 'inline'
+        label.innerHTML = 'x'
+        uniTarget.appendChild(label)
+        let val = Math.round(100 / steps)
+        for (let i = 1; i <= steps; i++) {
+          label = document.createElement('div')
+          label.style.display = 'inline'
+          label.style.margin = `${val}px`
+          label.innerHTML = 'x'
+          uniTarget.appendChild(label)
+        }
+      }
+      makeLabels(8)
 
 
     </script>
