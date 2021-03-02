@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+
+<!--
+
+- display hex, RR on red background, GG on green background, BB on blue background
+- add hex input
+- add HSL sliders that update in tandem
+- select steps, min, and max from dropdown
+  - radio button
+    - uniform
+    - custom: r, g, b
+  - change number of divs?
+  - change number of hex inputs
+  - how to convert steps to hsl inputs?
+- style sliders better
+
+[color div]
+[constraints div]
+[hex div]
+[R div][slider div]
+[G div][slider div]
+[B div][slider div]
+[H div][slider div]
+[S div][slider div]
+[L div][slider div]
+ -->
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Color Tools</title>
+  </head>
+  <body>
+
+    <div class="slider">
+    </div>
+    <br/>
+    <div class="constraints">
+      <input type="radio" id="uniform" name="unicust" checked>
+      <label for="uniform">uniform</label>
+      <label for="uni-steps">steps</label>
+      <select id="uni-steps">
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="8">8</option>
+        <option value="10">10</option>
+        <option value="12">12</option>
+        <option value="15">15</option>
+        <option value="16" selected>16</option>
+      </select>
+      <input type="radio" id="custom" name="unicust">
+      <label for="custom">custom</label>
+      <br/><br/>
+      <label for="red-steps">red steps</label>
+      <select id="red-steps">
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="8">8</option>
+        <option value="10">10</option>
+        <option value="12">12</option>
+        <option value="15">15</option>
+        <option value="16" selected>16</option>
+      </select>
+      <label for="red min">red min</label>
+      <input type="text" class="minmax" id="red min" value="0">
+      <label for="red max">red max</label>
+      <input type="text" class="minmax" id="red max" value="256">
+      <br/>
+      <label for="green-steps">grn steps</label>
+      <select id="green-steps">
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="8">8</option>
+        <option value="10">10</option>
+        <option value="12">12</option>
+        <option value="15">15</option>
+        <option value="16" selected>16</option>
+      </select>
+      <label for="green min">grn min</label>
+      <input type="text" class="minmax" id="green min" value="0">
+      <label for="green max">grn max</label>
+      <input type="text" class="minmax" id="green max" value="256">
+      <br/>
+      <label for="blue-steps">blu steps</label>
+      <select id="blue-steps">
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="8">8</option>
+        <option value="10">10</option>
+        <option value="12">12</option>
+        <option value="15">15</option>
+        <option value="16" selected>16</option>
+      </select>
+      <label for="blue min">blu min</label>
+      <input type="text" class="minmax" id="blue min" value="0">
+      <label for="blue max">blu max</label>
+      <input type="text" class="minmax" id="blue max" value="256">
+    </div>
+    <br/>
+
+    <input type="text" class="hex" value="">
+
+    <hr/><br/>
+
+    <div id="uniTarget">
+    </div>
+
+    <style media="screen">
+      :root {
+        --red: 102;
+        --green: 170;
+        --blue: 255;
+
+        --slider: rgb(var(--red), var(--green), var(--blue));
+
+      }
+
+      html {
+        font-family: "Courier New";
+      }
+
+      .slider {
+        height: 100px;
+        width: 400px;
+        background: var(--slider);
+      }
+
+      .constraints {
+        background: lightgray;
+        padding: 12px;
+      }
+
+      input.minmax {
+        width: 24px;
+      }
+
+      input.sliders {
+        width: 300px;
+        margin: 10px;
+      }
+    </style>
+
+    <script type="text/javascript">
+
+      const uniSteps = document.querySelector('#uni-steps')
+      let stepValue = uniSteps.value;
+
+      const uniTarget = document.querySelector('#uniTarget')
+      const uniSlider = document.createElement("input")
+      const makeSlider = (steps = 16) => {
+        uniSlider.setAttribute('type', 'range')
+        uniSlider.setAttribute('width', '400px')
+        uniSlider.setAttribute('step', `${100 / steps}`)
+        uniTarget.appendChild(uniSlider)
+      }
+      makeSlider(4)
+      console.log(uniSlider);
+
+
+    </script>
+  </body>
+
+</html>
