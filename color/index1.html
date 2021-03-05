@@ -150,7 +150,7 @@
         background: lightgray;
         border: none;
         padding: 4px;
-        width: 50px;
+        width: 100px;
       }
 
       input.sliders {
@@ -161,9 +161,31 @@
     </style>
 
     <script type="text/javascript">
+      /*
+      problems:
+        can't cement range maximum at 255
+        can't get ticks working properly
+
+        take 'steps'
+        'stepValue' = 256? / steps
+        'outputValue' = input value rounded to integer?
+
+      */
+
+
+
+
 
       const uniSteps = document.querySelector('#uni-steps')
       let stepValue = uniSteps.value;
+
+      const hex = document.querySelector('#hex')
+
+      let red = getComputedStyle(document.documentElement).getPropertyValue('--red');
+      let green = getComputedStyle(document.documentElement).getPropertyValue('--green');
+      let blue = getComputedStyle(document.documentElement).getPropertyValue('--blue');
+
+      hex.value = parseInt(red, 10).toString(16) + parseInt(green, 10).toString(16) + parseInt(blue, 10).toString(16)
 
       const uniTarget = document.querySelector('#uniTarget')
 
@@ -175,8 +197,8 @@
         uniSlider.className = 'sliders'
         uniSlider.min = 0
         uniSlider.max = 255
-        uniSlider.step = Math.round(256 / steps)
-        if (uniSlider.step === 256) { uniSlider.step = 255 }
+        uniSlider.step = (256 / steps).toFixed(3)
+        if (uniSlider.step > 255) { uniSlider.step = 255 }
         uniTarget.appendChild(uniSlider)
 
         const ticks = document.createElement('datalist')
@@ -187,9 +209,8 @@
 
         let op
         for (let i = 0; i <= steps; i++) {
-          let val = Math.round(256 / steps * i)
-          if (val === 256) { val = 255 }
-          console.log(val);
+          let val = 256 / steps * i
+          if (val > 255) { val = 255 }
           op = document.createElement('option')
           op.setAttribute('value', `${val}`)
           op.setAttribute('label', `${val}`)
@@ -198,7 +219,7 @@
 
         uniOut = document.createElement('output')
         uniOut.for = 'uniSlider'
-        uniOut.value = uniSlider.value
+        uniOut.value = Math.round(uniSlider.value)
         uniTarget.appendChild(uniOut)
 
         function outputUpdate(vol) {
@@ -207,7 +228,7 @@
 
         uniSlider.addEventListener('change', () => {
           console.log(uniSlider.value);
-          uniOut.value = uniSlider.value
+          uniOut.value = Math.round(uniSlider.value)
         })
 
         // uniTarget.appendChild(document.createElement('br'))
@@ -218,7 +239,8 @@
 
       const eventHandler = x => {
         stepValue = uniSteps.value
-        uniTarget.removeChild(uniSlider)
+        uniTarget.innerHTML = ''
+        // uniTarget.removeChild(uniSlider)
         makeSlider(stepValue)
       }
 
