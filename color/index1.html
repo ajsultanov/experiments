@@ -110,9 +110,7 @@
     </div>
     <br/>
 
-    <input type="text" class="hex" value=""><br/>
-
-    <input id="blue" class="sliders" type="range" name="blue" min="0" max="256" step="16" list="ticksb" value="">
+    #<input type="text" id="hex" value="FFFFFF"><br/>
 
     <hr/><br/>
 
@@ -148,8 +146,15 @@
         width: 24px;
       }
 
+      #hex {
+        background: lightgray;
+        border: none;
+        padding: 4px;
+        width: 50px;
+      }
+
       input.sliders {
-        width: 300px;
+        width: 500px;
         margin: 10px;
         background-color: red;
       }
@@ -163,14 +168,15 @@
       const uniTarget = document.querySelector('#uniTarget')
 
       let uniSlider
-      const makeSlider = (steps = 16) => {
+      const makeSlider = steps => {
         uniSlider = document.createElement('input')
         uniSlider.type = 'range'
+        uniSlider.id = 'uniSlider'
         uniSlider.className = 'sliders'
         uniSlider.min = 0
-        uniSlider.max = 256
-        uniSlider.style.width = '400px'
-        uniSlider.step = `${256 / steps}`
+        uniSlider.max = 255
+        uniSlider.step = Math.round(256 / steps)
+        if (uniSlider.step === 256) { uniSlider.step = 255 }
         uniTarget.appendChild(uniSlider)
 
         const ticks = document.createElement('datalist')
@@ -182,26 +188,42 @@
         let op
         for (let i = 0; i <= steps; i++) {
           let val = Math.round(256 / steps * i)
+          if (val === 256) { val = 255 }
+          console.log(val);
           op = document.createElement('option')
           op.setAttribute('value', `${val}`)
           op.setAttribute('label', `${val}`)
           ticks.appendChild(op)
         }
+
+        uniOut = document.createElement('output')
+        uniOut.for = 'uniSlider'
+        uniOut.value = uniSlider.value
+        uniTarget.appendChild(uniOut)
+
+        function outputUpdate(vol) {
+        	uniOut.value = vol;
+        }
+
+        uniSlider.addEventListener('change', () => {
+          console.log(uniSlider.value);
+          uniOut.value = uniSlider.value
+        })
+
         // uniTarget.appendChild(document.createElement('br'))
       }
       makeSlider(stepValue)
+
+
 
       const eventHandler = x => {
         stepValue = uniSteps.value
         uniTarget.removeChild(uniSlider)
         makeSlider(stepValue)
-        console.log(stepValue);
       }
 
       uniSteps.addEventListener('change', eventHandler)
-      uniSlider.addEventListener('change', () => {
-        console.log(uniSlider.value);
-      })
+
 
 
     </script>
