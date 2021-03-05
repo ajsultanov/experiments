@@ -110,7 +110,9 @@
     </div>
     <br/>
 
-    <input type="text" class="hex" value="">
+    <input type="text" class="hex" value=""><br/>
+
+    <input id="blue" class="sliders" type="range" name="blue" min="0" max="256" step="16" list="ticksb" value="">
 
     <hr/><br/>
 
@@ -149,55 +151,57 @@
       input.sliders {
         width: 300px;
         margin: 10px;
+        background-color: red;
       }
     </style>
 
     <script type="text/javascript">
 
-      const uniTarget = document.querySelector('#uniTarget')
-      const uniSlider = document.createElement('input')
       const uniSteps = document.querySelector('#uni-steps')
       let stepValue = uniSteps.value;
 
+      const uniTarget = document.querySelector('#uniTarget')
+
+      let uniSlider
       const makeSlider = (steps = 16) => {
-        uniSlider.setAttribute('type', 'range')
+        uniSlider = document.createElement('input')
+        uniSlider.type = 'range'
+        uniSlider.className = 'sliders'
+        uniSlider.min = 0
+        uniSlider.max = 256
         uniSlider.style.width = '400px'
-        uniSlider.setAttribute('step', `${100 / steps}`)
+        uniSlider.step = `${256 / steps}`
         uniTarget.appendChild(uniSlider)
 
         const ticks = document.createElement('datalist')
-        ticks.setAttribute('id', 'ticks')
+        ticks.id = 'ticks'
         ticks.style.display = 'inline'
         uniSlider.appendChild(ticks)
         uniSlider.setAttribute('list', 'ticks')
 
         let op
         for (let i = 0; i <= steps; i++) {
-          let val = Math.round(100 / steps * i)
+          let val = Math.round(256 / steps * i)
           op = document.createElement('option')
           op.setAttribute('value', `${val}`)
           op.setAttribute('label', `${val}`)
           ticks.appendChild(op)
         }
-        uniTarget.appendChild(document.createElement('br'))
+        // uniTarget.appendChild(document.createElement('br'))
       }
-      makeSlider(8)
+      makeSlider(stepValue)
 
-      const makeLabels = (steps = 16) => {
-        let label = document.createElement('div')
-        label.style.display = 'inline'
-        label.innerHTML = 'x'
-        uniTarget.appendChild(label)
-        let val = Math.round(100 / steps)
-        for (let i = 1; i <= steps; i++) {
-          label = document.createElement('div')
-          label.style.display = 'inline'
-          label.style.margin = `${val}px`
-          label.innerHTML = 'x'
-          uniTarget.appendChild(label)
-        }
+      const eventHandler = x => {
+        stepValue = uniSteps.value
+        uniTarget.removeChild(uniSlider)
+        makeSlider(stepValue)
+        console.log(stepValue);
       }
-      makeLabels(8)
+
+      uniSteps.addEventListener('change', eventHandler)
+      uniSlider.addEventListener('change', () => {
+        console.log(uniSlider.value);
+      })
 
 
     </script>
